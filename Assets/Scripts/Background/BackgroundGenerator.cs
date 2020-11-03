@@ -10,21 +10,25 @@ public class BackgroundGenerator : MonoBehaviour
 	public Color backgroundColor;
 
 	[Header("Point Stars")]
+	public bool regeneratePointStars;
 	public float starDensity;
 	public float starBrightness;
 
 	// references
-	MeshRenderer previewMR;
+	MeshRenderer backgroundSphere;
 
 	private void Start () {
 		// get references
-		previewMR = GetComponent<MeshRenderer>();
+		backgroundSphere = transform.Find("BackgroundSphere").GetComponent<MeshRenderer>();
 
-		Texture2D pointStars = StarGenerator.GeneratePointStars(width, starDensity, starBrightness, backgroundColor);
-		previewMR.material.mainTexture = pointStars;
+		if (regeneratePointStars) {
+			Texture2D pointStars = StarGenerator.GeneratePointStars(width, starDensity, starBrightness, backgroundColor);
+			backgroundSphere.material.mainTexture = pointStars;
 
-		// save the texture
-		SaveTextureAsPNG(pointStars, "pointStars");
+			// save the texture
+			SaveTextureAsPNG(pointStars, "pointStars");
+		}
+		
 	}
 
 	const string savePath = "/Resources/SavedBackgrounds/";
