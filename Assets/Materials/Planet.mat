@@ -36,7 +36,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DistortionNoise:
-        m_Texture: {fileID: 2800000, guid: fd45d23871bfc6942bcf997df08e248c, type: 3}
+        m_Texture: {fileID: 2800000, guid: fabca0960b6f4d24e96cbfb6ccb35939, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
@@ -68,14 +68,14 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _AtmosphereFalloff: 1.46
-    - _AtmosphereInflate: 0.0868
+    - _AtmosphereFalloff: 1.61
+    - _AtmosphereInflate: 0.0853
     - _BumpScale: 1
     - _Cutoff: 0.126
-    - _Density: 1.04
+    - _Density: 1
     - _DetailNormalMapScale: 1
-    - _Distortion: 0.027
-    - _DistortionScale: 1.22
+    - _Distortion: 0.601
+    - _DistortionScale: 0.5554438
     - _DoToon: 1
     - _DstBlend: 0
     - _FalloffStart: 0.447
@@ -87,17 +87,20 @@ Material:
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _Roundness: 6
-    - _Scale: 0.21
+    - _Scale: 0.11651386
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
-    - _Squish: 2
+    - _Squish: 8.028532
     - _SrcBlend: 1
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _AtmosphereColor: {r: 0.8301887, g: 0.59053046, b: 0.59053046, a: 1}
-    - _Color: {r: 0.9622642, g: 0.9622642, b: 0.9622642, a: 1}
+    - _AddLayerColor: {r: 0, g: 0, b: 0, a: 1}
+    - _AtmosphereColor: {r: 0.49411765, g: 0.79607844, b: 0.8666667, a: 1}
+    - _BaseLayerColor: {r: 0.043137256, g: 0.08627451, b: 1, a: 1}
+    - _Color: {r: 0.6156863, g: 0.69411767, b: 0.8862745, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _RandomOffsets: {r: 86.622475, g: 7.427872, b: 79.4575, a: 27.513805}
     - _Tint: {r: 0, g: 0, b: 0, a: 1}
     - _TintColor: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []

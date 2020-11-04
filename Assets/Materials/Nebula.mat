@@ -110,5 +110,5 @@ Material:
     m_Colors:
     - _Color: {r: 0.003921569, g: 0, b: 0.054901965, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _RandomOffsets: {r: 14.2, g: 2.77, b: -11.21, a: 17.2}
+    - _RandomOffsets: {r: 37.404457, g: 67.69951, b: 33.992878, a: 38.149826}
   m_BuildTextureStacks: []

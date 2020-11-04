@@ -3,8 +3,9 @@
     Properties
     {
 		_Color("Color", Color) = (0, 0, 0, 1)
+		_BaseLayerColor("Base Layer Color", Color) = (0, 0, 0, 1)
 		_Scale("Scale", Range(0,3)) = 1
-		_Squish("Squish", Range(0,3)) = 1
+		_Squish("Squish", Range(0,15)) = 1
 		_Roundness("Roundness", Range(0,10)) = 4
 		_Density("Density", Range(0,10)) = 0.5
 		_DistortionScale("Distortion Scale", Range(0,3)) = 1
@@ -12,10 +13,10 @@
 		[Toggle(TOON)] _DoToon("Do Toon Shading", Float) = 0
 		[NoScaleOffset]_Noise("Noise", 2D) = "white" {}
 		[NoScaleOffset]_DistortionNoise("Distorition Noise", 2D) = "white" {}
-		[NoScaleOffset]_Spectrum("Spectrum", 2D) = "white" {}
 		_AtmosphereColor("Atmosphere Color", Color) = (0, 0, 0, 1)
 		_AtmosphereFalloff("Atmosphere Falloff", Range(1,10)) = 3
 		_AtmosphereInflate("Atmosphere Size", Range(0,0.25)) = 0.1
+		_RandomOffsets("Random Offsets", Vector) = (0, 0, 0, 0)
 	}
     SubShader
     {
@@ -50,15 +51,17 @@
 
 			sampler2D _Noise;
 			sampler2D _DistortionNoise;
-			sampler2D _Spectrum;
 
 			half4 _Color;
+			half4 _BaseLayerColor;
 			half _Scale;
 			half _Squish;
 			half _Density;
 			half _Roundness;
 			half _DistortionScale;
 			half _Distortion;
+
+			fixed4 _RandomOffsets;
 
 			// lighting
 			fixed4 _LightColor0;
@@ -95,11 +98,11 @@
 			//	return val;
 			//}
 			float toonRampShading(float val) {
-				const float absoluteMin = 0.4;
-				const float boostVal = 1;
+				const float absoluteMin = 0.6;
+				const float boostVal = 0.9;
 				const float boostRatio = 1.2;
 				val = saturate(val * boostRatio + boostVal);
-				const float toonCuts = 3;
+				const float toonCuts = 1;
 				val = floor(val * toonCuts) / toonCuts;
 				if (val < absoluteMin) val = absoluteMin;
 				return val;
@@ -153,20 +156,24 @@
 				float backgroundAlpha = 0;
 				fixed3 col = _Color;
 
-				const int steps = 1;
-				float2 offset = 0;
-				float2 spec = float2(0, 0);
-				for (int i = 0; i < steps; i++) {
-					offset += 0.7;// *_RandomOffsets.w;
+				float2 offset = _RandomOffsets.xy;
 
-					fixed3 layerCol = tex2D(_Spectrum, spec).rgb;
+				float layerPointDensity = calcLayer(uv, offset);
+				backgroundAlpha = saturate(backgroundAlpha + layerPointDensity);
+				col = lerp(col, _BaseLayerColor, layerPointDensity);
 
-					float layerPointDensity = calcLayer(uv, offset);
-					backgroundAlpha = saturate(backgroundAlpha + layerPointDensity);
-					col = lerp(col, layerCol, layerPointDensity);
-
-					spec += 0.7;
-				}
+				//const int steps = 0;
+				//for (int i = 0; i < steps; i++) {
+				//	offset += 0.7;// *_RandomOffsets.w;
+				//	spec += 0.7;
+				//
+				//	fixed3 layerCol = tex2D(_Spectrum, spec).rgb;
+				//
+				//	float layerPointDensity = calcLayer(uv, offset);
+				//	backgroundAlpha = saturate(backgroundAlpha + layerPointDensity);
+				//	col = lerp(col, layerCol, layerPointDensity);
+				//
+				//}
 				col = lerp(_Color, col, backgroundAlpha);
 
 				// do shading

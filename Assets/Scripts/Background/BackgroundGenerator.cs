@@ -14,12 +14,24 @@ public class BackgroundGenerator : MonoBehaviour
 	public float starDensity;
 	public float starBrightness;
 
+	[Header("Planet")]
+	public float maxPlanetAngleFromBottom = 15;
+	public PlanetColorData[] planetDatas;
+
 	// references
 	MeshRenderer backgroundSphere;
+	Material nebulaMat;
+	Transform planetAnchor;
+	Material planetMat;
 
 	private void Start () {
 		// get references
 		backgroundSphere = transform.Find("BackgroundSphere").GetComponent<MeshRenderer>();
+		nebulaMat = backgroundSphere.sharedMaterial;
+		planetAnchor = transform.Find("PlanetAnchor");
+		MeshRenderer planetMR = planetAnchor.GetComponentInChildren<MeshRenderer>();
+		planetMat = new Material(planetMR.sharedMaterial);
+		planetMR.material = planetMat;
 
 		if (regeneratePointStars) {
 			Texture2D pointStars = StarGenerator.GeneratePointStars(width, starDensity, starBrightness, backgroundColor);
@@ -28,7 +40,68 @@ public class BackgroundGenerator : MonoBehaviour
 			// save the texture
 			SaveTextureAsPNG(pointStars, "pointStars");
 		}
-		
+
+		RandomizeNebula();
+		RandomizePlanet();
+	}
+
+	void RandomizeNebula () {
+		nebulaMat.SetVector("_RandomOffsets", GetRandomOffset());
+	}
+
+	void RandomizePlanet () {
+		planetMat.SetVector("_RandomOffsets", GetRandomOffset());
+
+		// calculate random rotation
+		float xAngle = 0;// Random.value * maxPlanetAngleFromBottom;
+		float yAngle = Random.value * 360f;
+		planetAnchor.rotation = Quaternion.Euler(xAngle, yAngle, 0);
+		float planetScale = GetVariedValue(1f, overallSizePercentVariance);
+		planetAnchor.localScale = new Vector3(planetScale, 1, planetScale);
+
+		PlanetColorData colorData = planetDatas[Random.Range(0, planetDatas.Length)];
+		PermutePlanet(planetMat, ref colorData);
+	}
+
+	Vector4 GetRandomOffset () {
+		return new Vector4(Random.value, Random.value, Random.value, Random.value) * 100f;
+	}
+
+	[System.Serializable]
+	public struct PlanetColorData {
+		public Color baseColor;
+		public Color baseLayerColor;
+		public Color atmosphereColor;
+	}
+
+	const float overallSizePercentVariance = 0.3f;
+	const float scalePercentVariance = 0.25f;
+	const float squishPercentVariance = 0.25f;
+	const float densityPercentVariance = 0.1f;
+	const float distortionScalePercentVariance = 0.25f;
+	const float distortionPercentVariance = 0.25f;
+	const float atmoSizePercentVariance = 0.25f;
+	const float atmoFalloffPercentVariance = 0.25f;
+	static void PermutePlanet (Material mat, ref PlanetColorData planetColorData) {
+		mat.SetColor("_Color", planetColorData.baseColor);
+		mat.SetColor("_BaseLayerColor", planetColorData.baseLayerColor);
+		mat.SetColor("_AtmosphereColor", planetColorData.atmosphereColor);
+
+		PermutePram(mat, "_Scale", scalePercentVariance);
+		PermutePram(mat, "_Squish", squishPercentVariance);
+		PermutePram(mat, "_Density", densityPercentVariance);
+		PermutePram(mat, "_DistortionScale", distortionScalePercentVariance);
+		PermutePram(mat, "_Distortion", distortionPercentVariance);
+		PermutePram(mat, "_AtmosphereInflate", atmoSizePercentVariance);
+		PermutePram(mat, "_AtmosphereFalloff", atmoFalloffPercentVariance);
+	}
+
+	static void PermutePram (Material mat, string pram, float maxVariance) {
+		mat.SetFloat(pram, GetVariedValue(mat.GetFloat(pram), maxVariance));
+	}
+
+	static float GetVariedValue(float initial, float maxPercent) {
+		return initial * Random.Range(1f - maxPercent, 1f + maxPercent);
 	}
 
 	const string savePath = "/Resources/SavedBackgrounds/";
