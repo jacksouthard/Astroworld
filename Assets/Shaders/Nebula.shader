@@ -7,7 +7,6 @@
 		_DistortionScale("Distortion Scale", Range(0,3)) = 1
 		_Distortion("Distortion", Range(0, 1)) = 1
 		_Density("Density", Range(0,20)) = 0.5
-		_Falloff("Falloff", Range(1,5)) = 3
 		[Toggle(TOON)] _DoToon("Do Toon Shading", Float) = 0
 		_Cutoff("Cutoff", Range(0,1)) = 0.5
 		_Cutoff2("Cutoff2", Range(0,1)) = 0.75
@@ -67,7 +66,6 @@
 			half4 _Color;
 			half _Scale;
 			half _Density;
-			half _Falloff;
 			half _Cutoff;
 			half _Cutoff2;
 			half _MaskCutoffLow;
@@ -113,8 +111,7 @@
 			}
 			float toonRamp(float val) {
 				const float toonCuts = 12;
-				val = floor(val * toonCuts) / toonCuts;
-				return val;
+				return floor(val * toonCuts) / toonCuts;
 			}
 
 			float calcMask(float2 uv, float2 offset) {

@@ -10,7 +10,7 @@
         LOD 100
 
 		Blend SrcAlpha OneMinusSrcAlpha // Additive blending.
-		ZWrite Off // Depth test off.
+		//ZWrite Off // Depth test off.
 
         Pass
         {
