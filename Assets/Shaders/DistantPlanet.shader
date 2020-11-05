@@ -10,6 +10,8 @@
         LOD 100
 
 		Blend SrcAlpha OneMinusSrcAlpha // Additive blending.
+		ColorMask RGBA // This is changed from "RGB" to "RGBA"
+		Cull Off Lighting Off ZWrite Off
 		//ZWrite Off // Depth test off.
 
         Pass

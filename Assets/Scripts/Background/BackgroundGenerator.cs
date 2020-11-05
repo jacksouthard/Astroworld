@@ -19,6 +19,9 @@ public class BackgroundGenerator : MonoBehaviour
 	public Material[] planetMaterials;
 	public PlanetColorData[] planetDatas;
 
+	[Header("Background Capture")]
+	public Cubemap backgroundCubemap;
+
 	// references
 	MeshRenderer backgroundSphere;
 	Material nebulaMat;
@@ -45,6 +48,21 @@ public class BackgroundGenerator : MonoBehaviour
 
 		RandomizeNebula();
 		RandomizePlanet();
+
+		//CaptureBackground();
+		StartCoroutine(CaptureNextFrame());
+	}
+
+	IEnumerator CaptureNextFrame () {
+		yield return new WaitForEndOfFrame();
+		CaptureBackground();
+	}
+
+	void CaptureBackground () {
+		Camera captureCamera = transform.Find("CaptureCamera").GetComponent<Camera>();
+		captureCamera.RenderToCubemap(backgroundCubemap);
+
+		Destroy(gameObject);
 	}
 
 	void RandomizeNebula () {
