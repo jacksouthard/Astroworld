@@ -4,6 +4,8 @@
     {
 		_Color("Color", Color) = (0, 0, 0, 1)
 		_BaseLayerColor("Base Layer Color", Color) = (0, 0, 0, 1)
+		[Toggle(ADDLAYER)] _DoAddLayer("Do Add Layer", Float) = 0
+		_Add0LayerColor("Add 0 Layer Color", Color) = (0, 0, 0, 1)
 		_Scale("Scale", Range(0,3)) = 1
 		_Squish("Squish", Range(0,15)) = 1
 		_Roundness("Roundness", Range(0,10)) = 4
@@ -13,6 +15,12 @@
 		[Toggle(TOON)] _DoToon("Do Toon Shading", Float) = 0
 		[NoScaleOffset]_Noise("Noise", 2D) = "white" {}
 		[NoScaleOffset]_DistortionNoise("Distorition Noise", 2D) = "white" {}
+		[NoScaleOffset]_AddMask("Add Mask", 2D) = "white" {}
+		[Toggle(ADDMASK)] _DoMask2("Do Add Mask", Float) = 0
+		_MaskScale("Mask Scale", Range(0,1)) = 0.5
+		_MaskCutoffLow("Mask Cutoff Low", Range(0,1)) = 0.3
+		_MaskCutoffHigh("Mask Cutoff High", Range(0,1)) = 0.7
+		_AddCutoff("Add Cutoff", Range(0,1)) = 0.5
 		_AtmosphereColor("Atmosphere Color", Color) = (0, 0, 0, 1)
 		_AtmosphereFalloff("Atmosphere Falloff", Range(1,10)) = 3
 		_AtmosphereInflate("Atmosphere Size", Range(0,0.25)) = 0.1
@@ -34,6 +42,8 @@
             #pragma fragment frag
 
 			#pragma multi_compile_local _ TOON
+			#pragma multi_compile_local _ ADDLAYER
+			#pragma multi_compile_local _ ADDMASK
 
             #include "UnityCG.cginc"
 
@@ -51,9 +61,16 @@
 
 			sampler2D _Noise;
 			sampler2D _DistortionNoise;
+			
+			sampler2D _AddMask;
+			half _MaskScale;
+			half _MaskCutoffLow;
+			half _MaskCutoffHigh;
+			half _AddCutoff;
 
 			half4 _Color;
 			half4 _BaseLayerColor;
+			half4 _Add0LayerColor;
 			half _Scale;
 			half _Squish;
 			half _Density;
@@ -80,6 +97,9 @@
 			float noise2(float2 p) {
 				return tex2D(_DistortionNoise, p).a;
 			}
+			float noise3(float2 p) {
+				return tex2D(_AddMask, p).a;
+			}
 
 			float toonRamp(float val) {
 				const float toonCuts = 7;
@@ -88,15 +108,15 @@
 			float toonRampCustom(float val, int cuts) {
 				return floor(val * cuts) / cuts;
 			}
-			//float smoothRamp(float val) {
-			//	if (val < _Cutoff) {
-			//		val = 0;
-			//	}
-			//	else {
-			//		val = (val - _Cutoff) / (1 - _Cutoff);
-			//	}
-			//	return val;
-			//}
+			float smoothRamp(float val) {
+				if (val < _AddCutoff) {
+					val = 0;
+				}
+				else {
+					val = (val - _AddCutoff) / (1 - _AddCutoff);
+				}
+				return val;
+			}
 			float toonRampShading(float val) {
 				const float absoluteMin = 0.6;
 				const float boostVal = 0.9;
@@ -107,6 +127,21 @@
 				if (val < absoluteMin) val = absoluteMin;
 				return val;
 			}
+
+			float calcMask(float2 uv, float2 offset) {
+				float m = 1 - noise3(uv * _MaskScale * _Scale + offset);
+				if (m < _MaskCutoffLow) {
+					m = 0;
+				}
+				else if (m > _MaskCutoffHigh) {
+					m = 1;
+				}
+				else {
+					m = (m - _MaskCutoffLow) / (_MaskCutoffHigh - _MaskCutoffLow);
+				}
+				return m;
+			}
+
 			float calcCircle(half x, half y) {
 				return sqrt(1 - x * x - y * y);
 			}
@@ -126,10 +161,21 @@
 				float distortionX = noise2(uv * _DistortionScale * _Scale + offset);
 				float distortionY = noise2(uv.yx * _DistortionScale * _Scale * 1.5f + offset);
 				float n = noise(uv * _Scale + float2(distortionX, distortionY) * _Distortion + offset);
+				#ifdef TOON
+				n = toonRamp(n);
+				#endif
+				return n * _Density;
+			}
+			float calcAddLayer(float2 uv, float2 offset) {
+				float distortionX = noise2(uv * _DistortionScale * _Scale + offset);
+				float distortionY = noise2(uv.yx * _DistortionScale * _Scale * 1.5f + offset);
+				float n = noise(uv * _Scale + float2(distortionX, distortionY) * _Distortion + offset);
 				//n = 1 - n;
 
-				//n = smoothRamp(n);
-				//n *= calcMask(uv, offset);
+				n = smoothRamp(n);
+#ifdef ADDMASK
+				n *= calcMask(uv, offset);
+#endif
 
 				//#ifdef MASK2
 				//				n *= calcMask2(uv, offset * 1.3 + 0.7);
@@ -162,18 +208,16 @@
 				backgroundAlpha = saturate(backgroundAlpha + layerPointDensity);
 				col = lerp(col, _BaseLayerColor, layerPointDensity);
 
-				//const int steps = 0;
-				//for (int i = 0; i < steps; i++) {
-				//	offset += 0.7;// *_RandomOffsets.w;
-				//	spec += 0.7;
-				//
-				//	fixed3 layerCol = tex2D(_Spectrum, spec).rgb;
-				//
-				//	float layerPointDensity = calcLayer(uv, offset);
-				//	backgroundAlpha = saturate(backgroundAlpha + layerPointDensity);
-				//	col = lerp(col, layerCol, layerPointDensity);
-				//
-				//}
+				#ifdef ADDLAYER
+				const int steps = 1;
+				for (int i = 0; i < steps; i++) {
+					offset += 0.7 *_RandomOffsets.w;
+								
+					float layerPointDensity = calcAddLayer(uv, offset) * _Add0LayerColor.a;
+					backgroundAlpha = saturate(backgroundAlpha + layerPointDensity);
+					col = lerp(col, _Add0LayerColor.rgb, layerPointDensity);
+				}
+				#endif
 				col = lerp(_Color, col, backgroundAlpha);
 
 				// do shading

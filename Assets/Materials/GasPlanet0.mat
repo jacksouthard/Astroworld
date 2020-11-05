@@ -7,9 +7,9 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Nebula
-  m_Shader: {fileID: 4800000, guid: 5e7c6c1e02807b74aa8c2f589cc303e9, type: 3}
-  m_ShaderKeywords: MASK2 TOON
+  m_Name: GasPlanet0
+  m_Shader: {fileID: 4800000, guid: efa7b9fa2507b38428aa401248ec7714, type: 3}
+  m_ShaderKeywords: ADDLAYER ADDMASK TOON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -19,8 +19,8 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _Background:
-        m_Texture: {fileID: 2800000, guid: 31bf2e3528d44174d87dab3fee9a6072, type: 3}
+    - _AddMask:
+        m_Texture: {fileID: 2800000, guid: fabca0960b6f4d24e96cbfb6ccb35939, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -40,7 +40,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DistortionNoise:
-        m_Texture: {fileID: 2800000, guid: 589572bae24eb8b48afbb68f9b29dc70, type: 3}
+        m_Texture: {fileID: 2800000, guid: fabca0960b6f4d24e96cbfb6ccb35939, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
@@ -48,11 +48,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 31bf2e3528d44174d87dab3fee9a6072, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Mask2:
-        m_Texture: {fileID: 2800000, guid: fabca0960b6f4d24e96cbfb6ccb35939, type: 3}
+        m_Texture: {fileID: 2800000, guid: 67f95c24f097a80498538afb0499e532, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -76,39 +72,46 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
+    - _AddCutoff: 0.127
+    - _AtmosphereFalloff: 1.61
+    - _AtmosphereInflate: 0.0853
     - _BumpScale: 1
-    - _Cutoff: 0.121
-    - _Cutoff2: 0.465
-    - _Density: 2.49
+    - _Cutoff: 0.126
+    - _Density: 1
     - _DetailNormalMapScale: 1
-    - _Distortion: 0.244
-    - _DistortionScale: 0.32
+    - _Distortion: 0.601
+    - _DistortionScale: 0.5554438
+    - _DoAddLayer: 1
     - _DoMask2: 1
     - _DoToon: 1
     - _DstBlend: 0
-    - _Falloff: 4.26
+    - _FalloffStart: 0.447
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _Mask2CutoffHigh: 0.685
-    - _Mask2CutoffLow: 0.648
-    - _Mask2Scale: 0.086
-    - _MaskCutoff: 0
-    - _MaskCutoffHigh: 0.766
-    - _MaskCutoffLow: 0.478
-    - _MaskScale: 0.155
+    - _MaskCutoffHigh: 0.55
+    - _MaskCutoffLow: 0.431
+    - _MaskScale: 0.5
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _Scale: 0.75
+    - _Roundness: 6
+    - _Scale: 0.11651386
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
+    - _Squish: 8.028532
     - _SrcBlend: 1
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0.003921569, g: 0, b: 0.054901965, a: 1}
+    - _Add0LayerColor: {r: 1, g: 0, b: 0, a: 1}
+    - _AddLayerColor: {r: 0, g: 0, b: 0, a: 1}
+    - _AtmosphereColor: {r: 0.49411765, g: 0.8666667, b: 0.7808257, a: 1}
+    - _BaseLayerColor: {r: 0, g: 1, b: 0.09836078, a: 1}
+    - _Color: {r: 0, g: 0.4716981, b: 0.39386356, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _RandomOffsets: {r: 34.68994, g: 38.590305, b: 41.598267, a: 40.230854}
+    - _RandomOffsets: {r: 94.6, g: 13.3, b: 85.4, a: 27.79}
+    - _Tint: {r: 0, g: 0, b: 0, a: 1}
+    - _TintColor: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []

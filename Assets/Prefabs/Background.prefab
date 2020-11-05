@@ -83,10 +83,30 @@ MonoBehaviour:
   starDensity: 0.03
   starBrightness: 0.1
   maxPlanetAngleFromBottom: 25
+  planetMaterials:
+  - {fileID: 2100000, guid: e0c570a62daf6714bbc0ea2bc39f403c, type: 2}
+  - {fileID: 2100000, guid: 45bae20cdcf450348897683428a67e63, type: 2}
   planetDatas:
   - baseColor: {r: 0.6156863, g: 0.69411767, b: 0.8862745, a: 1}
     baseLayerColor: {r: 0.043137256, g: 0.08627451, b: 1, a: 1}
+    addLayerColor: {r: 0.81842756, g: 0, b: 1, a: 0.8039216}
     atmosphereColor: {r: 0.49411765, g: 0.79607844, b: 0.8666667, a: 1}
+  - baseColor: {r: 0.9056604, g: 0.8228458, b: 0.7552866, a: 1}
+    baseLayerColor: {r: 0.9528302, g: 0.30089372, b: 0, a: 1}
+    addLayerColor: {r: 0, g: 0.2652371, b: 1, a: 1}
+    atmosphereColor: {r: 0.8666667, g: 0.67340964, b: 0.49411765, a: 1}
+  - baseColor: {r: 0, g: 0.47058824, b: 0.39215687, a: 1}
+    baseLayerColor: {r: 0, g: 1, b: 0.09803922, a: 1}
+    addLayerColor: {r: 1, g: 0.5397482, b: 0, a: 0.7529412}
+    atmosphereColor: {r: 0.49411765, g: 0.8666667, b: 0.78039217, a: 1}
+  - baseColor: {r: 0.6, g: 1, b: 0.9529412, a: 1}
+    baseLayerColor: {r: 0, g: 0.6039216, b: 0.13333334, a: 1}
+    addLayerColor: {r: 1, g: 0, b: 0, a: 1}
+    atmosphereColor: {r: 0.49411765, g: 0.8666667, b: 0.78039217, a: 1}
+  - baseColor: {r: 1, g: 1, b: 1, a: 1}
+    baseLayerColor: {r: 0, g: 0, b: 0, a: 1}
+    addLayerColor: {r: 0.8666667, g: 0, b: 1, a: 1}
+    atmosphereColor: {r: 0.8973586, g: 0.23018867, b: 1, a: 1}
 --- !u!1 &7580390797704273028
 GameObject:
   m_ObjectHideFlags: 0
@@ -227,7 +247,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e0c570a62daf6714bbc0ea2bc39f403c, type: 2}
+  - {fileID: 2100000, guid: 45bae20cdcf450348897683428a67e63, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

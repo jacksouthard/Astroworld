@@ -16,6 +16,7 @@ public class BackgroundGenerator : MonoBehaviour
 
 	[Header("Planet")]
 	public float maxPlanetAngleFromBottom = 15;
+	public Material[] planetMaterials;
 	public PlanetColorData[] planetDatas;
 
 	// references
@@ -30,7 +31,8 @@ public class BackgroundGenerator : MonoBehaviour
 		nebulaMat = backgroundSphere.sharedMaterial;
 		planetAnchor = transform.Find("PlanetAnchor");
 		MeshRenderer planetMR = planetAnchor.GetComponentInChildren<MeshRenderer>();
-		planetMat = new Material(planetMR.sharedMaterial);
+		//planetMat = new Material(planetMR.sharedMaterial);
+		planetMat = new Material(planetMaterials[Random.Range(0, planetMaterials.Length)]);
 		planetMR.material = planetMat;
 
 		if (regeneratePointStars) {
@@ -71,6 +73,7 @@ public class BackgroundGenerator : MonoBehaviour
 	public struct PlanetColorData {
 		public Color baseColor;
 		public Color baseLayerColor;
+		public Color addLayerColor;
 		public Color atmosphereColor;
 	}
 
@@ -85,6 +88,7 @@ public class BackgroundGenerator : MonoBehaviour
 	static void PermutePlanet (Material mat, ref PlanetColorData planetColorData) {
 		mat.SetColor("_Color", planetColorData.baseColor);
 		mat.SetColor("_BaseLayerColor", planetColorData.baseLayerColor);
+		mat.SetColor("_Add0LayerColor", planetColorData.addLayerColor);
 		mat.SetColor("_AtmosphereColor", planetColorData.atmosphereColor);
 
 		PermutePram(mat, "_Scale", scalePercentVariance);
