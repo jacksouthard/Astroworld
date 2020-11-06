@@ -30,35 +30,67 @@ public class AsteroidManager : Singleton<AsteroidManager>
 
     // PARTICLE BILLBOARDS
     public ParticleSystem billboardPS;
+    bool particleUpdateQued = false;
+    const int maxActiveAsteroids = 500; // not synced with particle system max particles, but they should be the same
 
     // list is sorted with lowest z billboard asteroids first (index 0)
     List<Vector3> activeAsteroidPositions = new List<Vector3>();
+    ParticleSystem.Particle[] particles = new ParticleSystem.Particle[maxActiveAsteroids];
 
     public void RegisterBillboardAsteroids (Vector3[] asteroidPositions) {
         for (int i = 0; i < asteroidPositions.Length; i++) {
             activeAsteroidPositions.Add(asteroidPositions[i]);
         }
-        UpdateParticles();
+
+        QueParticleUpdate();
     }
 
     public void DeregisterBillboardAsteroids(Vector3 firstAsteroidPosition, int registeredCount) {
+        int firstIndex = activeAsteroidPositions.IndexOf(firstAsteroidPosition);
+        activeAsteroidPositions.RemoveRange(firstIndex, registeredCount);
+        QueParticleUpdate();
+    }
 
+    void QueParticleUpdate () {
+        if (particleUpdateQued) return;
+        StartCoroutine(UpdateParticlesNextFrame());
+
+    }
+    IEnumerator UpdateParticlesNextFrame () {
+        particleUpdateQued = true;
+        yield return null;
+        UpdateParticles();
+        particleUpdateQued = false;
     }
 
     void UpdateParticles () {
-        ParticleSystem.Particle[] particles = new ParticleSystem.Particle[activeAsteroidPositions.Count];
+        int diff = activeAsteroidPositions.Count - billboardPS.particleCount;
+        //print("Old: " + billboardPS.particleCount + " Diff: " + diff);
+        if (diff > 0) {
+            // particle system has less particles than active asteroids
+            billboardPS.Emit(diff);
+            // then re get the particles array
+            //billboardPS.GetParticles(particles);
+        } else if (diff < 0) {
+            // particle system has more particles than active asteroids
+            int destroyStartIndex = billboardPS.particleCount + diff;
+            for (int j = 0; j < billboardPS.particleCount; j++) {
+                particles[j].remainingLifetime = -1;
+            }
+        }
+
+        //print("New: " + billboardPS.particleCount);
         int i = 0;
         foreach (var asteroidPos in activeAsteroidPositions) {
             particles[i] = new ParticleSystem.Particle {
                 position = asteroidPos,
-                startSize = 3,
+                startSize = 2 * asteroidRadius,
                 startColor = Color.white,
                 startLifetime = Mathf.Infinity
             };
             i++;
         }
-        int diff = activeAsteroidPositions.Count - billboardPS.particleCount;
-        billboardPS.Emit(diff);
+
         billboardPS.SetParticles(particles, activeAsteroidPositions.Count);
     }
 

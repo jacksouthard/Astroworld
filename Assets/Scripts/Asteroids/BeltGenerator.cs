@@ -18,17 +18,28 @@ public class BeltGenerator : MonoBehaviour
     float farthestZ = Mathf.NegativeInfinity;
 
     // generation buffers
-    public const float generationBuffer = 600;
+    public const float generationBuffer = 1000;
     public const float despawnBuffer = 100;
     // lod switch distances
-    public const float movingAsteroidDistance = 300;
+    public const float movingAsteroidDistance = 200;
     public const float movingAndPhysicalAsteroidDistance = 100;
 
     // belt is made up of a list of chunks, index 0 is lowest Z and end index is highest z
     List<BeltChunk> chunks = new List<BeltChunk>();
 
     private void Start() {
+        mainCam = Camera.main.transform;
+
         GenerateInitial();
+    }
+
+    // testing
+    Transform mainCam;
+    private void Update() {
+        mainCam.position = Vector3.forward * (Time.time * 50f);
+        Debug.DrawRay(mainCam.position, Vector3.up * 30, Color.yellow, Time.deltaTime);
+        Debug.DrawRay(mainCam.position + Vector3.forward * movingAsteroidDistance, Vector3.up * 30, Color.red, Time.deltaTime);
+        SetFarthestZ(mainCam.position.z);
     }
 
     public void GenerateInitial () {
@@ -65,7 +76,8 @@ public class BeltGenerator : MonoBehaviour
     }
 
     void UpdateLODs () {
-        float curDist = despawnedZ;
+        //print (farthestZ - despawnedZ);
+        float curDist = -despawnBuffer - chunkSize;
         foreach (var chunk in chunks) {
             BeltChunk.LOD newLOD;
             if (curDist < movingAndPhysicalAsteroidDistance) {

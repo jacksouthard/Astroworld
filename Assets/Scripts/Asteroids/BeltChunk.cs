@@ -17,10 +17,13 @@ public class BeltChunk : MonoBehaviour
     Vector3[] asteroidPositions;
     List<GameObject> asteroids = new List<GameObject>();
 
+    public float startZ { get; private set; }
+
     // when chunk is created, it is automattically positioned to its generation start position
     public void Initialize () {
         asteroidPositions = new Vector3[BeltGenerator.asteroidsPerChunk];
-        float curZ = transform.position.z;
+        startZ = transform.position.z;
+        float curZ = startZ;
         for (int i = 0; i < BeltGenerator.asteroidsPerChunk; i++) {
             curZ += generationZStep;
             asteroidPositions[i] = GetNextAsteroidPosition(curZ);
@@ -96,7 +99,7 @@ public class BeltChunk : MonoBehaviour
 
     void SetAsteroidCollidersActive (bool newActive) {
         for (int i = 0; i < transform.childCount; i++) {
-            transform.GetChild(0).GetComponent<Collider>().enabled = newActive;
+            transform.GetChild(i).GetComponent<Collider>().enabled = newActive;
         }
     }
 
