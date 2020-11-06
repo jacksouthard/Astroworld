@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7580390797558307250}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PlanetAnchor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41,7 +41,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7580390797703201703}
   - component: {fileID: 7580390797703201700}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -120,7 +120,7 @@ GameObject:
   - component: {fileID: 7580390797704273029}
   - component: {fileID: 7580390797704273035}
   - component: {fileID: 7580390797704273034}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: BackgroundSphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -201,7 +201,7 @@ GameObject:
   - component: {fileID: 7580390797764778455}
   - component: {fileID: 7580390797764778453}
   - component: {fileID: 7580390797764778452}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ClosePlanet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -282,7 +282,7 @@ GameObject:
   - component: {fileID: 7580390799138102518}
   - component: {fileID: 7580390799138102516}
   - component: {fileID: 7580390799138102519}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: DistantPlanets
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -314,7 +314,7 @@ ParticleSystem:
   lengthInSec: 5
   simulationSpeed: 1
   stopAction: 0
-  cullingMode: 0
+  cullingMode: 3
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
   looping: 0
@@ -496,8 +496,8 @@ ParticleSystem:
       maxColor: {r: 0, g: 0.5545661, b: 0.8207547, a: 0.18431373}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 0.16212173, g: 0.89278316, b: 0.9339623, a: 1}
-        key1: {r: 1, g: 0.20463812, b: 0.050943315, a: 0.25882354}
+        key0: {r: 0.16212173, g: 0.89278316, b: 0.9339623, a: 0.25882354}
+        key1: {r: 1, g: 0.20463812, b: 0.050943315, a: 0.13725491}
         key2: {r: 0.17856887, g: 0.7169812, b: 0.45767805, a: 0.13725491}
         key3: {r: 0.8301887, g: 0.43389106, b: 0.59471256, a: 0}
         key4: {r: 0.17429687, g: 0.4138382, b: 0.9056604, a: 0}
@@ -513,7 +513,7 @@ ParticleSystem:
         ctime6: 0
         ctime7: 0
         atime0: 0
-        atime1: 1157
+        atime1: 65535
         atime2: 65535
         atime3: 0
         atime4: 0
@@ -522,7 +522,7 @@ ParticleSystem:
         atime7: 0
         m_Mode: 0
         m_NumColorKeys: 5
-        m_NumAlphaKeys: 3
+        m_NumAlphaKeys: 2
       minGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -1005,7 +1005,7 @@ ParticleSystem:
     m_SpriteRenderer: {fileID: 0}
     m_UseMeshMaterialIndex: 0
     m_UseMeshColors: 1
-    alignToDirection: 0
+    alignToDirection: 1
     m_Texture: {fileID: 0}
     m_TextureClipChannel: 3
     m_TextureClipThreshold: 0
@@ -5126,7 +5126,7 @@ ParticleSystemRenderer:
   m_SortingFudge: 0
   m_NormalDirection: 1
   m_ShadowBias: 0
-  m_RenderAlignment: 0
+  m_RenderAlignment: 2
   m_Pivot: {x: 0, y: 0, z: 0}
   m_Flip: {x: 0, y: 0, z: 0}
   m_UseCustomVertexStreams: 0
@@ -5151,7 +5151,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6119442226082818146}
   - component: {fileID: 152307929826507625}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: CaptureCamera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5181,7 +5181,7 @@ Camera:
   m_GameObject: {fileID: 8965477764800058516}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 4
+  m_ClearFlags: 1
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2

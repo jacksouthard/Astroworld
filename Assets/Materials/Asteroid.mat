@@ -60,7 +60,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Ramp:
-        m_Texture: {fileID: 2800000, guid: 9567c27376aa96d4db0be9c699e6f223, type: 3}
+        m_Texture: {fileID: 2800000, guid: 339a05282bf461142a615c6502bd1bce, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
@@ -74,7 +74,7 @@ Material:
     - _Metallic: 0
     - _Mode: 0
     - _NormalMapPower: 0.15
-    - _NormalMapScale: 0.11
+    - _NormalMapScale: 0.17
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _RimIntensity: 1

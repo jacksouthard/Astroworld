@@ -90,8 +90,8 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _Mask2CutoffHigh: 0.685
-    - _Mask2CutoffLow: 0.648
+    - _Mask2CutoffHigh: 0.613
+    - _Mask2CutoffLow: 0.543
     - _Mask2Scale: 0.086
     - _MaskCutoff: 0
     - _MaskCutoffHigh: 0.766
@@ -110,5 +110,5 @@ Material:
     m_Colors:
     - _Color: {r: 0.003921569, g: 0, b: 0.054901965, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _RandomOffsets: {r: 7.5906405, g: 42.882294, b: 71.067444, a: 97.98436}
+    - _RandomOffsets: {r: 44.263405, g: 93.23781, b: 61.657387, a: 60.2662}
   m_BuildTextureStacks: []

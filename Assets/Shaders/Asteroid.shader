@@ -70,7 +70,7 @@ Shader "Custom/Asteroid" {
 				triblend /= max(dot(triblend, half3(1,1,1)), 0.0001);
 
 				// preview blend
-				// return fixed4(triblend.xyz, 1);
+				//return fixed4(triblend.xyz, 1);
 
 				// calculate triplanar uvs
 				// applying texture scale and offset values ala TRANSFORM_TEX macro
@@ -204,7 +204,7 @@ Shader "Custom/Asteroid" {
 				triblend /= max(dot(triblend, half3(1,1,1)), 0.0001);
 
 				// preview blend
-				// return fixed4(triblend.xyz, 1);
+				//return fixed4(triblend.xyz, 1);
 
 				// calculate triplanar uvs
 				// applying texture scale and offset values ala TRANSFORM_TEX macro
@@ -227,7 +227,7 @@ Shader "Custom/Asteroid" {
 				uvY.x *= axisSign.y;
 				uvZ.x *= -axisSign.z;
 			#endif
-
+            
 				// tangent space normal maps
 				half3 tnormalX = UnpackNormal(tex2D(_BumpMap, uvX));
 				half3 tnormalY = UnpackNormal(tex2D(_BumpMap, uvY));

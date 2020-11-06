@@ -128,10 +128,6 @@ public class BackgroundGenerator : MonoBehaviour
 
 	const string savePath = "/Resources/SavedBackgrounds/";
 	public static void SaveTextureAsPNG (Texture2D texture, string fileName = "map") {
-		//first Make sure you're using RGB24 as your texture format
-		//Texture2D texture = new Texture2D(width, height, TextureFormat.RGB24, false);
-
-		//then Save To Disk as PNG
 		byte[] bytes = texture.EncodeToPNG();
 		string dirPath = Application.dataPath + savePath;
 		if (!Directory.Exists(dirPath)) {
