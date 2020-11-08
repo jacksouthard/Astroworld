@@ -12,7 +12,7 @@ public class AsteroidBillboardParticles : MonoBehaviour
     AsteroidManager.AsteroidData asteroidData;
     int atlasIndex;
 
-    List<Vector3> asteroidPositions = new List<Vector3>();
+    List<AsteroidManager.AsteroidBillboard> asteroidBillboards = new List<AsteroidManager.AsteroidBillboard>();
     ParticleSystem.Particle[] particles = new ParticleSystem.Particle[maxActiveAsteroids];
 
     public void Initialize (AsteroidManager.AsteroidData asteroidData, int atlasIndex) {
@@ -44,12 +44,12 @@ public class AsteroidBillboardParticles : MonoBehaviour
         //textureSheet.frameOverTimeMultiplier = AsteroidManager.altasTotalSize;
     }
 
-    public void PushBack (Vector3 position) {
-        asteroidPositions.Add(position);
+    public void PushBack (AsteroidManager.AsteroidBillboard billboard) {
+        asteroidBillboards.Add(billboard);
         QueParticleUpdate();
     }
     public void PopFront () {
-        asteroidPositions.RemoveAt(0);
+        asteroidBillboards.RemoveAt(0);
         QueParticleUpdate();
     }
 
@@ -66,31 +66,23 @@ public class AsteroidBillboardParticles : MonoBehaviour
     }
 
     void UpdateParticles() {
-        int diff = asteroidPositions.Count - billboardPS.particleCount;
+        int diff = asteroidBillboards.Count - billboardPS.particleCount;
         if (diff > 0) {
             billboardPS.Emit(diff);
-        } else if (diff < 0) {
-            // the diff should never be less than 0 so ignore
-
-            // remove particles from the front of the array
-            //for (int j = 0; j < -diff; j++) {
-            //    particles[j].remainingLifetime = -1;
-            //}
-            //billboardPS.SetParticles(particles);
         }
 
         billboardPS.GetParticles(particles);
 
         int i = 0;
-        foreach (var asteroidPos in asteroidPositions) {
+        foreach (var billboard in asteroidBillboards) {
             particles[i].remainingLifetime = particleLifeTime;
-            particles[i].position = asteroidPos;
-            particles[i].startSize = asteroidData.squareSize;
+            particles[i].position = billboard.position;
+            particles[i].startSize = asteroidData.squareSize * billboard.size;
             particles[i].startColor = Color.white;
 
             i++;
         }
 
-        billboardPS.SetParticles(particles, asteroidPositions.Count);
+        billboardPS.SetParticles(particles, asteroidBillboards.Count);
     }
 }

@@ -14,20 +14,21 @@ public class BeltChunk : MonoBehaviour
     }
     LOD curLOD = LOD.unset;
 
-    AsteroidManager.ActiveAsteroidBillboard[] asteroidBillboards;
+    AsteroidManager.AsteroidBillboard[] asteroidBillboards;
     List<GameObject> asteroids = new List<GameObject>();
 
     public float startZ { get; private set; }
 
     // when chunk is created, it is automattically positioned to its generation start position
     public void Initialize () {
-        asteroidBillboards = new AsteroidManager.ActiveAsteroidBillboard[BeltGenerator.asteroidsPerChunk];
+        asteroidBillboards = new AsteroidManager.AsteroidBillboard[BeltGenerator.asteroidsPerChunk];
         startZ = transform.position.z;
         float curZ = startZ;
         for (int i = 0; i < BeltGenerator.asteroidsPerChunk; i++) {
             curZ += generationZStep;
-            asteroidBillboards[i] = new AsteroidManager.ActiveAsteroidBillboard(AsteroidManager.instance.GetRandomAtlasIndex(),
-                GetNextAsteroidPosition(curZ));
+            asteroidBillboards[i] = new AsteroidManager.AsteroidBillboard(AsteroidManager.instance.GetRandomAtlasIndex(),
+                GetNextAsteroidPosition(curZ),
+                AsteroidManager.instance.GetRandomAsteroidSize());
         }
     }
 
@@ -107,7 +108,7 @@ public class BeltChunk : MonoBehaviour
     void RandomizeAsteroidMotion () {
         foreach (var asteroid in asteroids) {
             Rigidbody rb = asteroid.GetComponent<Rigidbody>();
-            // do something
+            AsteroidManager.instance.ApplyImpulseToAsteroid(rb);
         }
     }
 

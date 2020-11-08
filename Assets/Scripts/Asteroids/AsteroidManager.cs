@@ -20,9 +20,10 @@ public class AsteroidManager : Singleton<AsteroidManager>
     }
 
     // 3D ASTEROID GENERATION
-    public GameObject GenerateAsteroid (ActiveAsteroidBillboard billboard, BeltChunk chunk) {
+    public GameObject GenerateAsteroid (AsteroidBillboard billboard, BeltChunk chunk) {
         AsteroidData asteroidData = asteroidDatas[billboard.atlasIndex];
         GameObject ret = Instantiate(asteroidData.prefab, billboard.position, Quaternion.identity, chunk.transform);
+        ret.transform.localScale = Vector3.one * billboard.size;
         return ret;
     }
 
@@ -36,14 +37,38 @@ public class AsteroidManager : Singleton<AsteroidManager>
         }
     }
 
+    // ASTEROID SCALES
+    [Header("Asteroid Generation")]
+    public float minSize = 0.5f;
+    public float maxSize = 2f;
+    public AnimationCurve sizeCurve;
+
+    public float GetRandomAsteroidSize () {
+        return Mathf.Lerp(minSize, maxSize, sizeCurve.Evaluate(Random.value));
+    }
+
+    // ASTEROID PHYSICS
+    [Header("Moving Asteroids")]
+    public float avgSpinSpeed = 1;
+    const float spinSpeedPercentVariance = 0.6f;
+    const float upperSpeedPercent = 1f + spinSpeedPercentVariance;
+    const float lowerSpeedPercent = 1f - spinSpeedPercentVariance;
+
+    public void ApplyImpulseToAsteroid(Rigidbody asteroidRB) {
+        float spinSpeed = Random.Range(lowerSpeedPercent, upperSpeedPercent) * avgSpinSpeed;
+        asteroidRB.AddTorque(Random.onUnitSphere * spinSpeed, ForceMode.VelocityChange);
+    }
+
     // PARTICLE BILLBOARDS
-    public struct ActiveAsteroidBillboard {
+    public struct AsteroidBillboard {
         public int atlasIndex;
         public Vector3 position;
+        public float size;
 
-        public ActiveAsteroidBillboard(int atlasIndex, Vector3 position) {
+        public AsteroidBillboard(int atlasIndex, Vector3 position, float size) {
             this.atlasIndex = atlasIndex;
             this.position = position;
+            this.size = size;
         }
     }
 
@@ -51,7 +76,7 @@ public class AsteroidManager : Singleton<AsteroidManager>
     public GameObject billboardParticlesPrefab;
     AsteroidBillboardParticles[] asteroidBillboards;
     // list is sorted with lowest z billboard asteroids first (index 0)
-    List<ActiveAsteroidBillboard> activeAsteroidBillboards = new List<ActiveAsteroidBillboard>();
+    List<AsteroidBillboard> activeAsteroidBillboards = new List<AsteroidBillboard>();
     
     void InitializeBillboards () {
         asteroidBillboards = new AsteroidBillboardParticles[asteroidDatas.Length];
@@ -62,10 +87,10 @@ public class AsteroidManager : Singleton<AsteroidManager>
         }
     }
 
-    public void RegisterBillboardAsteroids (ref ActiveAsteroidBillboard[] newBillboards) {
+    public void RegisterBillboardAsteroids (ref AsteroidBillboard[] newBillboards) {
         for (int i = 0; i < newBillboards.Length; i++) {
             activeAsteroidBillboards.Add(newBillboards[i]);
-            asteroidBillboards[newBillboards[i].atlasIndex].PushBack(newBillboards[i].position);
+            asteroidBillboards[newBillboards[i].atlasIndex].PushBack(newBillboards[i]);
         }
     }
 
