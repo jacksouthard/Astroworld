@@ -14,19 +14,20 @@ public class BeltChunk : MonoBehaviour
     }
     LOD curLOD = LOD.unset;
 
-    Vector3[] asteroidPositions;
+    AsteroidManager.ActiveAsteroidBillboard[] asteroidBillboards;
     List<GameObject> asteroids = new List<GameObject>();
 
     public float startZ { get; private set; }
 
     // when chunk is created, it is automattically positioned to its generation start position
     public void Initialize () {
-        asteroidPositions = new Vector3[BeltGenerator.asteroidsPerChunk];
+        asteroidBillboards = new AsteroidManager.ActiveAsteroidBillboard[BeltGenerator.asteroidsPerChunk];
         startZ = transform.position.z;
         float curZ = startZ;
         for (int i = 0; i < BeltGenerator.asteroidsPerChunk; i++) {
             curZ += generationZStep;
-            asteroidPositions[i] = GetNextAsteroidPosition(curZ);
+            asteroidBillboards[i] = new AsteroidManager.ActiveAsteroidBillboard(AsteroidManager.instance.GetRandomAtlasIndex(),
+                GetNextAsteroidPosition(curZ));
         }
     }
 
@@ -72,10 +73,10 @@ public class BeltChunk : MonoBehaviour
 
     // LOD states
     void EnterBillboard () {
-        AsteroidManager.instance.RegisterBillboardAsteroids(asteroidPositions);
+        AsteroidManager.instance.RegisterBillboardAsteroids(ref asteroidBillboards);
     }
     void ExitBillboard () {
-        AsteroidManager.instance.DeregisterBillboardAsteroids(asteroidPositions[0], BeltGenerator.asteroidsPerChunk);
+        AsteroidManager.instance.DeregisterBillboardAsteroids(BeltGenerator.asteroidsPerChunk);
     }
 
     void EnterMoving () {
@@ -92,9 +93,9 @@ public class BeltChunk : MonoBehaviour
     // helpers
     void Generate3DAsteroids () {
         for (int i = 0; i < BeltGenerator.asteroidsPerChunk; i++) {
-            asteroids.Add(AsteroidManager.instance.GenerateAsteroid(asteroidPositions[i], this));
+            asteroids.Add(AsteroidManager.instance.GenerateAsteroid(asteroidBillboards[i], this));
         }
-        asteroidPositions = null;
+        asteroidBillboards = null;
     }
 
     void SetAsteroidCollidersActive (bool newActive) {
