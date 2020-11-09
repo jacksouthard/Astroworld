@@ -6,6 +6,7 @@ using System.IO;
 public class AsteroidManager : Singleton<AsteroidManager>
 {
     private void Awake() {
+        InitializeAsteroidDatas();
         InitializeBillboardAssets();
         InitializeBillboards();
     }
@@ -16,7 +17,15 @@ public class AsteroidManager : Singleton<AsteroidManager>
     [System.Serializable]
     public struct AsteroidData {
         public GameObject prefab;
+        [HideInInspector]
         public float squareSize;
+    }
+
+    void InitializeAsteroidDatas () {
+        for (int i = 0; i < asteroidDatas.Length; i++) {
+            float radius = asteroidDatas[i].prefab.GetComponent<SphereCollider>().radius;
+            asteroidDatas[i].squareSize = radius * 2f;
+        }
     }
 
     // 3D ASTEROID GENERATION
@@ -105,8 +114,9 @@ public class AsteroidManager : Singleton<AsteroidManager>
     [Header("Billboard Capturing")]
     public bool recaptureAsteroids;
     public bool squareAtlas = true;
+    public Texture altasTexture;
     const int captureLayer = 9;
-    const int captureTextureSize = 256; // per asteroid
+    const int captureTextureSize = 128; // per asteroid
     public static int altasSideSize;
     public static int altasTotalSize;
     Transform captureSpace;
@@ -125,14 +135,15 @@ public class AsteroidManager : Singleton<AsteroidManager>
         }
 
         if (recaptureAsteroids) {
-            if (squareAtlas) CaptureSquareAsteroidAtlas();
-            else CaptureCollumnAsteroidAtlas();
+            // generate a new atlas
+            if (squareAtlas) altasTexture = CaptureSquareAsteroidAtlas();
+            else altasTexture = CaptureCollumnAsteroidAtlas();
         }
 
         Destroy(captureSpace.gameObject);
     }
 
-    void CaptureSquareAsteroidAtlas () {
+    Texture2D CaptureSquareAsteroidAtlas () {
         // set up the asteroid prefabs to be captured
         // each asteroid will be scaled to have a width of 1m
         float offset1D = (float)(altasSideSize - 1) / 2f;
@@ -166,9 +177,11 @@ public class AsteroidManager : Singleton<AsteroidManager>
         captureCamera.targetTexture = null;
 
         Debug.Log("Captured " + altasSideSize + "x" + altasSideSize + " Atlas with " + asteroidDatas.Length + " asteroids");
+
+        return texture;    
     }
 
-    void CaptureCollumnAsteroidAtlas() {
+    Texture2D CaptureCollumnAsteroidAtlas() {
         // set up the asteroid prefabs to be captured
         // each asteroid will be scaled to have a width of 1m
         float offset1D = (float)(altasSideSize - 1) / 2f;
@@ -203,6 +216,8 @@ public class AsteroidManager : Singleton<AsteroidManager>
         captureCamera.targetTexture = null;
 
         Debug.Log("Captured 1x" + altasSideSize + " Atlas with " + asteroidDatas.Length + " asteroids");
+
+        return texture;
     }
 
     const float particleLifeTime = 1000;

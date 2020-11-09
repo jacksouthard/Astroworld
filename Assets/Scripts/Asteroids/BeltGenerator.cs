@@ -6,7 +6,7 @@ public class BeltGenerator : MonoBehaviour
 {
     public GameObject chunkPrefab;
 
-    public const float gapBetweenAsteroids = 10;
+    public const float gapBetweenAsteroids = 5; // 10
     public const float asteroidGapVariance = 0.25f; // percent
     public const float chunkSize = 50;
     public const int asteroidsPerChunk = (int)(chunkSize / gapBetweenAsteroids + 0.9f);
@@ -18,8 +18,8 @@ public class BeltGenerator : MonoBehaviour
     float farthestZ = Mathf.NegativeInfinity;
 
     // generation buffers
-    public const float generationBuffer = 1000;
-    public const float despawnBuffer = 100;
+    public const float generationBuffer = 1500;
+    public const float despawnBuffer = 75;
     // lod switch distances
     public const float movingAsteroidDistance = 200;
     public const float movingAndPhysicalAsteroidDistance = 100;
@@ -27,22 +27,28 @@ public class BeltGenerator : MonoBehaviour
     // belt is made up of a list of chunks, index 0 is lowest Z and end index is highest z
     List<BeltChunk> chunks = new List<BeltChunk>();
 
+    // references
+    Transform mainCam;
+    BeltDustManager beltDust;
+
     private void Start() {
+        // get references
         mainCam = Camera.main.transform;
+        beltDust = transform.Find("BeltDust").GetComponent<BeltDustManager>();
 
         GenerateInitial();
     }
 
     // testing
-    Transform mainCam;
     private void Update() {
-        mainCam.position = Vector3.forward * (Time.time * 50f);
+        mainCam.position = Vector3.forward * (Time.time * 25f);
         Debug.DrawRay(mainCam.position, Vector3.up * 30, Color.yellow, Time.deltaTime);
         Debug.DrawRay(mainCam.position + Vector3.forward * movingAsteroidDistance, Vector3.up * 30, Color.red, Time.deltaTime);
         SetFarthestZ(mainCam.position.z);
     }
 
     public void GenerateInitial () {
+        beltDust.GenerateInitial();
         SetFarthestZ(0);
     }
 
@@ -52,12 +58,13 @@ public class BeltGenerator : MonoBehaviour
         while (farthestZ + generationBuffer > generatedZ) {
             GenerateNext();
         }
-
         while (farthestZ - despawnBuffer - chunkSize > despawnedZ) {
             DespawnLast();
         }
 
         UpdateLODs();
+
+        beltDust.FarthestZUpdated(z);
     }
 
     void GenerateNext () {

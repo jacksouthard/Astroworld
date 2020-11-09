@@ -42,6 +42,9 @@ public class AsteroidBillboardParticles : MonoBehaviour
             textureSheet.numTilesY = AsteroidManager.altasSideSize;
         }
         //textureSheet.frameOverTimeMultiplier = AsteroidManager.altasTotalSize;
+
+        // get the updated texture altas
+        GetComponent<ParticleSystemRenderer>().sharedMaterial.mainTexture = AsteroidManager.instance.altasTexture;
     }
 
     public void PushBack (AsteroidManager.AsteroidBillboard billboard) {

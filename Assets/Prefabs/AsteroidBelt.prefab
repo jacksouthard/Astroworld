@@ -140,6 +140,15 @@ MonoBehaviour:
   - prefab: {fileID: 6669919270882863352, guid: ddf40dbc7a362412da6cb2e404a8efd3,
       type: 3}
     squareSize: 3.3
+  - prefab: {fileID: 1126619292355571136, guid: ac6e66df974aa4822b047ebe2afff0f7,
+      type: 3}
+    squareSize: 3.2
+  - prefab: {fileID: 1126619292355571136, guid: 4dcae1f3608eb41d6b1cb92f36f99ec9,
+      type: 3}
+    squareSize: 3.2
+  - prefab: {fileID: 1126619292355571136, guid: b1865a3f4de634c268d2685e36fd9e21,
+      type: 3}
+    squareSize: 3.2
   minSize: 0.75
   maxSize: 3
   sizeCurve:
@@ -178,8 +187,9 @@ MonoBehaviour:
   avgSpinSpeed: 0.5
   billboardParticlesPrefab: {fileID: 4573383555749635554, guid: 2c7aff6131e574149a7c04703da718bc,
     type: 3}
-  recaptureAsteroids: 0
+  recaptureAsteroids: 1
   squareAtlas: 0
+  altasTexture: {fileID: 2800000, guid: 31e76a2941420493eb884311e7c2eae7, type: 3}
 --- !u!1 &7675569402308826923
 GameObject:
   m_ObjectHideFlags: 0
