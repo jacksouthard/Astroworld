@@ -86,7 +86,7 @@ Material:
     - _MaskCutoffHigh: 0.663
     - _MaskCutoffLow: 0.392
     - _MaskScale: 0.72
-    - _MaxAlpha: 0.125
+    - _MaxAlpha: 0.13
     - _Metallic: 0
     - _Mode: 0
     - _NormalMapPower: 0.15
@@ -106,5 +106,5 @@ Material:
     - _Color: {r: 0.9056604, g: 0.8205303, b: 0.6707013, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _NormalMapBlend: {r: 1, g: 1, b: 1, a: 1}
-    - _RandomOffsets: {r: 2.94, g: 0.06, b: 1.45, a: 1.17}
+    - _RandomOffsets: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []

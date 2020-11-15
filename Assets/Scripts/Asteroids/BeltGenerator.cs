@@ -41,7 +41,7 @@ public class BeltGenerator : MonoBehaviour
 
     // testing
     private void Update() {
-        mainCam.position = Vector3.forward * (Time.time * 25f);
+        mainCam.Translate(Vector3.forward * Time.deltaTime * 25f, Space.World);
         Debug.DrawRay(mainCam.position, Vector3.up * 30, Color.yellow, Time.deltaTime);
         Debug.DrawRay(mainCam.position + Vector3.forward * movingAsteroidDistance, Vector3.up * 30, Color.red, Time.deltaTime);
         SetFarthestZ(mainCam.position.z);

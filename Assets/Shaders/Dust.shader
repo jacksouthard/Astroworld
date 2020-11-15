@@ -5,7 +5,6 @@
         _Color("Color", Color) = (0, 0, 0, 1)
         _MaxAlpha("Max alpha", Range(0,1)) = 1
         _Visibility("Visibility", Range(0,1)) = 1
-        _CircluarCutoffLow("Circular Cutoff Low", Range(0,1)) = 0.3
         _CircluarCutoffHigh("Circular Cutoff High", Range(0,1)) = 0.8
         [NoScaleOffset]_Noise("Noise", 2D) = "white" {}
         _Scale("Noise Scale", Range(0,3)) = 1
@@ -70,7 +69,6 @@
             half _MaskCutoffLow;
             half _MaskCutoffHigh;
             
-            half _CircluarCutoffLow;
             half _CircluarCutoffHigh;
             
             fixed4 _RandomOffsets;
@@ -103,9 +101,7 @@
                 a = (a - _Cutoff) / (1 - _Cutoff);
                 
                 float circA = 1;
-                if (p < _CircluarCutoffLow) {
-                    circA = p / _CircluarCutoffLow;
-                } else if (p > _CircluarCutoffHigh) {
+                if (p > _CircluarCutoffHigh) {
                     circA = 1 - (p - _CircluarCutoffHigh) / (1 - _CircluarCutoffHigh);
                 }
                 
