@@ -30,6 +30,10 @@ public class BeltDustManager : MonoBehaviour
         }
     }
 
+    public void CurrentZUpdated (float z) {
+
+    }
+
     public void FarthestZUpdated (float farthestZ) {
         if (dustWalls[0].z < farthestZ) {
             DespawnLast();

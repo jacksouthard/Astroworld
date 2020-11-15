@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BeltGenerator : MonoBehaviour
+public class BeltGenerator : Singleton<BeltGenerator>
 {
     public GameObject chunkPrefab;
 
@@ -28,32 +28,27 @@ public class BeltGenerator : MonoBehaviour
     List<BeltChunk> chunks = new List<BeltChunk>();
 
     // references
-    Transform mainCam;
     BeltDustManager beltDust;
 
     private void Start() {
         // get references
-        mainCam = Camera.main.transform;
         beltDust = transform.Find("BeltDust").GetComponent<BeltDustManager>();
 
         GenerateInitial();
     }
 
-    // testing
-    private void Update() {
-        mainCam.Translate(Vector3.forward * Time.deltaTime * 25f, Space.World);
-        Debug.DrawRay(mainCam.position, Vector3.up * 30, Color.yellow, Time.deltaTime);
-        Debug.DrawRay(mainCam.position + Vector3.forward * movingAsteroidDistance, Vector3.up * 30, Color.red, Time.deltaTime);
-        SetFarthestZ(mainCam.position.z);
-    }
-
     public void GenerateInitial () {
         beltDust.GenerateInitial();
-        SetFarthestZ(0);
+        SetCurrentZ(0);
     }
 
-    public void SetFarthestZ (float z) {
-        if (z > farthestZ) farthestZ = z;
+    public void SetCurrentZ (float z) {
+        beltDust.CurrentZUpdated(z);
+        if (z > farthestZ) SetFarthestZ(z);
+    }
+
+    void SetFarthestZ (float z) {
+        farthestZ = z;
 
         while (farthestZ + generationBuffer > generatedZ) {
             GenerateNext();
